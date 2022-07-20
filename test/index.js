@@ -153,28 +153,28 @@ const queryInvoiceResult = async (invoiceNum, repeatTimes = 3) => {
 
   const invoice = response.data?.result[0];
 
-  if (!invoice || invoice.status !== 2) {
-    if (invoice && repeatTimes > 0) {
-      console.log(`retry fetch invoice, current status: ${invoice.status} - ${invoice.statusMsg}`);
-      await delay(10000);
-      return queryInvoiceResult(invoiceNum, repeatTimes - 1);
-    }
-    throw new Error(`Can't fetch invoice: ${invoiceNum}`);
-
+  if (invoice && parseInt(invoice.status, 10) === 2) {
+    return invoice;
   }
 
-  return invoice.imgUrls;
+  if (invoice && repeatTimes > 0) {
+    console.log(`retry fetch invoice, current status: ${invoice.status} - ${invoice.statusMsg}`);
+    await delay(10000);
+    return queryInvoiceResult(invoiceNum, repeatTimes - 1);
+  }
+  throw new Error(`Can't fetch invoice: ${invoiceNum}`);
 };
 
 async function test() {
-  // const orderNo = Math.random().toString(36).substr(2);
-  // console.log('orderNo', orderNo);
-  // const invoiceNumber = await requestBillingNew(orderNo);
-  const invoiceNumber = '22072015181902023731';
+  const orderNo = Math.random().toString(36).substr(2);
+  console.log('orderNo', orderNo);
+  const invoiceNumber = await requestBillingNew(orderNo);
+  // const invoiceNumber = '22072015181902023731';
   console.log('invoiceSerialNum', invoiceNumber);
-  await delay(10000);
-  const imgUrl = await queryInvoiceResult(invoiceNumber);
-  console.log('imgUrl', imgUrl);
+  await delay(10000); // on sandbox sometime invoicing process can take more then 5 minutes (not sure about production)
+  const data = await queryInvoiceResult(invoiceNumber);
+  console.log('imgUrls', data.imgUrls);
+  console.log('pdfUrl', data.pdfUrl);
 }
 
 test();
