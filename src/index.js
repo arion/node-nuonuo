@@ -223,7 +223,11 @@ class Nuonuo {
    * @memberof Nuonuo
    */
   async sendRequest(requestUrl, senid, appKey, appSecret, accessToken, userTax, method, content) {
-    const timestamp = Math.round(Date.now() / 1000); // 时间戳
+    const date = new Date();
+    const utc = Math.round((date.getTime() + (date.getTimezoneOffset() * 60000)) / 1000);
+    const timestamp = utc + (3600 * 3); // 时间戳
+    const originTimestamp = Math.round(Date.now() / 1000); // 时间戳
+    console.log({originTimestamp, timestamp});
     const nonce = Math.floor(Math.random(1000000000)); // 随机正整数
     const { pathname } = new URL(requestUrl);
     const jsonContent = JSON.stringify(content);
