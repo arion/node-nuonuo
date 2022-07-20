@@ -171,7 +171,7 @@ async function test() {
   // console.log('orderNo', orderNo);
   // const invoiceNumber = await requestBillingNew(orderNo);
   const invoiceNumber = '22072015181902023731';
-  console.log('invoiceSerialNum', invoiceNumber);
+  // console.log('invoiceSerialNum', invoiceNumber);
   await delay(10000);
   const imgUrl = await queryInvoiceResult(invoiceNumber);
   console.log('imgUrl', imgUrl);

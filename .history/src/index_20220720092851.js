@@ -241,7 +241,6 @@ class Nuonuo {
       headers,
       data: jsonContent,
       dataType: 'json',
-      timeout: 10000,
     });
     return result;
   }

@@ -1,0 +1,59 @@
+'use strict';
+
+const Nuonuo = require('../src');
+
+const config = {
+  isv: true,
+  redirectUri: 'http://localhost:7001/nuonuo/redirect', // if isv is true
+  authTokenUrl: 'https://open.nuonuo.com/accessToken',
+  authCodeUrl: 'https://open.nuonuo.com/authorize',
+  apiUrl: 'https://sandbox.nuonuocs.cn/open/v1/services',
+  appKey: 'SD63236305',
+  appSecret: 'SDDED2523BED4643',
+  userTax: '339902999999789113',
+  okCode: '0000',
+  accessTokenCache: {
+    store: 'memory',
+    prefix: 'nuonuo',
+    ttl: 86400, // 24 hours
+    quota: [ 50, 2592000 ], // 50 times / 30 days
+  },
+};
+
+// const queryInvoiceResult = async (invoiceNum) => {
+//   const nuonuo = new Nuonuo(config);
+
+//   const { userTax } = nuonuo.config;
+
+//   const method = 'nuonuo.ElectronInvoice.queryInvoiceResult';
+//   const content = {
+//     isOfferInvoiceDetail: '1',
+//     orderNos: [ '' ],
+//     serialNos: [ invoiceNum ],
+//   };
+
+//   const response = await nuonuo.exec(method, content, userTax);
+//   console.log('response', response);
+// };
+
+// queryInvoiceResult('20072900172803000846');
+
+const getInvoiceInformation = async (invoiceNum) => {
+  const nuonuo = new Nuonuo(config);
+
+  const { userTax } = nuonuo.config;
+
+  const method = 'nuonuo.ElectronInvoice.queryInvoiceResult';
+  const content = {
+    isOfferInvoiceDetail: '1',
+    orderNos: [ '' ],
+    serialNos: [ invoiceNum ],
+  };
+
+  const response = await nuonuo.exec(method, content, userTax);
+  console.log('response', response);
+};
+
+getInvoiceInformation('20072900172803000846');
+
+runTest();

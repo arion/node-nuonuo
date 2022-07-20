@@ -52,7 +52,6 @@ const requestBillingNew = async orderNo => {
   };
 
   const response = await nuonuo.exec(method, content, userTax);
-
   // console.log('response', response.data);
   // {
   //   code: 'E0000',
@@ -79,7 +78,6 @@ const queryInvoiceResult = async (invoiceNum, repeatTimes = 3) => {
 
   const response = await nuonuo.exec(method, content, userTax);
 
-  // console.log('response', response.data);
   // [
   //   {
   //     "address": "",
@@ -151,11 +149,11 @@ const queryInvoiceResult = async (invoiceNum, repeatTimes = 3) => {
   //   }
   // ]
 
-  const invoice = response.data?.result[0];
+  const invoice = response.data.result[0];
 
   if (!invoice || invoice.status !== 2) {
-    if (invoice && repeatTimes > 0) {
-      console.log(`retry fetch invoice, current status: ${invoice.status} - ${invoice.statusMsg}`);
+    if (repeatTimes > 0) {
+      console.log('retry fetch invoice');
       await delay(10000);
       return queryInvoiceResult(invoiceNum, repeatTimes - 1);
     }
@@ -170,9 +168,8 @@ async function test() {
   // const orderNo = Math.random().toString(36).substr(2);
   // console.log('orderNo', orderNo);
   // const invoiceNumber = await requestBillingNew(orderNo);
-  const invoiceNumber = '22072015181902023731';
-  console.log('invoiceSerialNum', invoiceNumber);
-  await delay(10000);
+  // console.log('invoiceSerialNum', invoiceNumber);
+  const invoiceSerialNum = '22072015181902023731';
   const imgUrl = await queryInvoiceResult(invoiceNumber);
   console.log('imgUrl', imgUrl);
 }
